@@ -114,8 +114,13 @@ io.on("connection", (socket) => {
   // disconnect event.
   socket.on("disconnect", () => {
     console.log("Disconnecting socket id ", socket.id);
+    let user = findUserConnectedToSameRoom(socket.id, usertoRoomMapping);
+
     usertoRoomMapping.delete(socket.id);
-    console.log(usertoRoomMapping);
+    if(user){
+      io.to(...user).emit("client_disconnected_Event", {msg:"The other player disconnected."})
+    }
+
   });
 });
 

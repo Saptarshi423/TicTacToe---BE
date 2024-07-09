@@ -15,16 +15,16 @@ const numOfUserConnectedMoreThanTwo = (usertoRoomMapping, connectedRoom) => {
   return false;
 };
 
-const modifyInput = (input)=>{
-  Object.keys(input).forEach((key)=>{
-    if((input[Number(key)].val.length === 0)){
-      input[Number(key)].color = "blue";
-    }
-  });
-  //console.log(input)
-}
+/**
+ * @param {number} incomingConnID - socket id.
+ * @param {Map} usertoRoomMapping - The name of the room to which the web client wants to connect.
+ */
 
 const findUserConnectedToSameRoom = (incomingConnID, usertoRoomMapping)=>{
+  if((usertoRoomMapping.get(incomingConnID) === undefined) || (usertoRoomMapping.get(incomingConnID) === null)){
+    return undefined;
+  }
+
   let users = [];
   let {room} = usertoRoomMapping.get(incomingConnID);
 
@@ -34,6 +34,15 @@ const findUserConnectedToSameRoom = (incomingConnID, usertoRoomMapping)=>{
     }
   });
   return users;
+}
+
+const modifyInput = (input)=>{
+  Object.keys(input).forEach((key)=>{
+    if((input[Number(key)].val.length === 0)){
+      input[Number(key)].color = "blue";
+    }
+  });
+  //console.log(input)
 }
 
 function generateNewColor() {
