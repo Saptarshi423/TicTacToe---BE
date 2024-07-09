@@ -15,8 +15,9 @@ const {numOfUserConnectedMoreThanTwo, modifyInput, findUserConnectedToSameRoom, 
 // map the socket instance to selected room.
 let usertoRoomMapping = new Map();
 
-//use id
-let user_id = 1;
+// TODO: need to find out a generic way to store the user id in a differentiated manner.
+//user id
+let user_id = 1; 
 
 app.use(cors({ origin: URL }));
 
@@ -27,8 +28,6 @@ io.on("connection", (socket) => {
   socket.on("clicked", (arg) => {
     try {
       const value = usertoRoomMapping.get(socket.id); //get socket details based on socket id.
-      // let userListConnectedToSameRoom = findUserConnectedToSameRoom(socket.id, usertoRoomMapping);
-      // console.log(userListConnectedToSameRoom)
 
       if(value){
         let userListConnectedToSameRoom = findUserConnectedToSameRoom(socket.id, usertoRoomMapping);
@@ -51,13 +50,12 @@ io.on("connection", (socket) => {
       if(value){
         console.log("Specific socket already connected..getting the room number and broadcasting the clicked event value to the sockets connected to this room..");
         const connectedToRoom  = value.room;
-        console.log("Winner", arg)
+
         io.to(connectedToRoom).emit("broadcast_winEvent", arg)
       }
     } catch (error) {
       console.log(error)
     }
-    //socket.broadcast.emit("broadcast_winEvent", arg);
   });
 
   // on reset event.
@@ -118,7 +116,7 @@ io.on("connection", (socket) => {
 
     usertoRoomMapping.delete(socket.id);
     if(user){
-      io.to(...user).emit("client_disconnected_Event", {msg:"The other player disconnected."})
+      io.to(...user).emit("client_disconnected_Event", {msg:"The other player disconnected."}); // inform the second player the other one left/disconnected.
     }
 
   });
