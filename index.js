@@ -115,6 +115,7 @@ io.on("connection", (socket) => {
     let user = findUserConnectedToSameRoom(socket.id, usertoRoomMapping);
 
     usertoRoomMapping.delete(socket.id);
+    console.log(usertoRoomMapping)
     if(user){
       io.to(...user).emit("client_disconnected_Event", {msg:"The other player disconnected."}); // inform the second player the other one left/disconnected.
     }
@@ -122,6 +123,6 @@ io.on("connection", (socket) => {
   });
 });
 
-httpServer.listen(5050, () => {
+httpServer.listen(8080, () => {
   console.log("HTTP SERVER LISTENING AT PORT 5050");
 });
