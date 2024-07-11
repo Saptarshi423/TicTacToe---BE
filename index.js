@@ -129,6 +129,6 @@ io.on("connection", (socket) => {
   });
 });
 
-httpServer.listen(8080, () => {
-  console.log("HTTP SERVER LISTENING AT PORT 8080")
+httpServer.listen(process.env.PORT, () => {
+  console.log(`HTTP SERVER LISTENING AT PORT ${process.env.PORT}`)
 });
