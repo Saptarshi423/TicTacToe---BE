@@ -3,12 +3,18 @@ const express = require("express");
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
-
+const dotenv = require('dotenv');
 const app = express();
-const URL = "http://localhost:3000";
-app.use(cors({ origin: URL }));
 const httpServer = createServer(app);
+
+// endpoints
+dotenv.config();
+const URL = app.settings.env === "production" ? process.env.REACT_APP_PROD_IP : process.env.REACT_APP_DEV_IP;
 const io = new Server(httpServer, { cors: URL });
+
+//enable CORS
+app.use(cors({ origin: URL }));
+
 //helper function imports
 const {numOfUserConnectedMoreThanTwo, modifyInput, findUserConnectedToSameRoom, generateNewColor} = require('./helper')
 
@@ -124,5 +130,5 @@ io.on("connection", (socket) => {
 });
 
 httpServer.listen(8080, () => {
-  console.log("HTTP SERVER LISTENING AT PORT 5050");
+  console.log("HTTP SERVER LISTENING AT PORT 8080")
 });
