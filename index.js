@@ -130,5 +130,5 @@ io.on("connection", (socket) => {
 });
 
 httpServer.listen(process.env.PORT, () => {
-  console.log(`HTTP SERVER LISTENING AT PORT ${process.env.PORT}`)
+  console.log(`HTTP SERVER LISTENING AT PORT ${process.env.PORT}`);
 });
