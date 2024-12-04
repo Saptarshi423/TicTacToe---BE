@@ -25,8 +25,6 @@ let usertoRoomMapping = new Map();
 //user id
 let user_id = 1; 
 
-app.use(cors({ origin: URL }));
-
 io.on("connection", (socket) => {
   console.log(socket.id+" connected");
 
@@ -121,13 +119,18 @@ io.on("connection", (socket) => {
     let user = findUserConnectedToSameRoom(socket.id, usertoRoomMapping);
 
     usertoRoomMapping.delete(socket.id);
-    console.log(usertoRoomMapping)
     if(user){
       io.to(...user).emit("client_disconnected_Event", {msg:"The other player disconnected."}); // inform the second player the other one left/disconnected.
     }
 
   });
 });
+
+app.use('/status',(req,res)=>{
+  return res.status(200).json({
+    msg:'Connected'
+  })
+})
 
 httpServer.listen(process.env.PORT, () => {
   console.log(`HTTP SERVER LISTENING AT PORT ${process.env.PORT}`);
